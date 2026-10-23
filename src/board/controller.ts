@@ -37,6 +37,8 @@ export interface Props {
 
 export class BoardController {
   private items: Item[] = [];
+  /** Lists we applied via emit() whose React round-trip hasn't arrived yet. */
+  private emitted: Item[][] = [];
   private sel = new Set<string>();
   private tool: Tool = "select";
   private pen: Pen = { color: "ink", size: 3 };
@@ -103,7 +105,13 @@ export class BoardController {
 
   // ---- state from React ---------------------------------------------------------------------
   setProps(p: Props) {
-    if (p.items !== this.items) {
+    const echo = this.emitted.indexOf(p.items);
+    if (echo >= 0) {
+      // React handing back a list we already applied locally in emit()
+      this.emitted.splice(0, echo + 1);
+    } else if (p.items !== this.items) {
+      // a change that didn't originate here (undo, delete, font size, new board…)
+      this.emitted = [];
       this.items = p.items;
       this.preview.clear();
       this.r.setItems(p.items);
@@ -447,6 +455,8 @@ export class BoardController {
   /** Send a new item list to the app and adopt it locally right away (React catches up a frame later). */
   private emit(items: Item[]) {
     this.items = items;
+    this.emitted.push(items);
+    this.r.setItems(items); // draw it now; React's copy of the same list is recognised in setProps
     this.cb.onCommit(items);
   }
 

@@ -151,6 +151,7 @@ async function interactions(open: (p: string) => Promise<void>, getApi: () => Ca
   await drag(sx(700), sy(600), sx(900), sy(650));
   const last = items().at(-1)!;
   await check("pen draws a stroke", items().length === n0 + 1 && last.type === "stroke", `${items().length} items, last=${last.type}`);
+  await check("new stroke is drawn on screen", renderer.viewCount === items().length && renderer.view(last.id)?.root.visible === true, `views=${renderer.viewCount} visible=${renderer.view(last.id)?.root.visible}`);
   await key("e");
   await drag(sx(800), sy(550), sx(800), sy(700));
   await check("eraser removes stroke", items().length === n0 && !items().some((i) => i.type === "stroke"), `${items().length} items`);
@@ -170,6 +171,7 @@ async function interactions(open: (p: string) => Promise<void>, getApi: () => Ca
     await sleep(200);
     const note = items().find((i) => i.type === "text" && i.text === "A brand new note");
     await check("note saved on blur", !!note && note.height > 0, note ? `h=${note.height}` : "missing");
+    await check("new note is drawn on screen", !!note && renderer.view(note.id)?.root.visible === true);
   }
 
   // delete
