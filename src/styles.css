@@ -1,0 +1,119 @@
+:root {
+  --bg: #17171a;
+  --panel: #1f1f23;
+  --line: #2f2f35;
+  --text: #e6e6ea;
+  --dim: #8b8b95;
+  --accent: #6e78ff;
+  /* read by the WebGL scene (plain #rrggbb only) */
+  --canvas: #17171a;
+  --dot: #2c2c33;
+  --note: #26262d;
+  --handle: #ffffff;
+  --placeholder: #2a2a31;
+  --placeholder-line: #5a5a66;
+  color-scheme: dark;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+:root[data-theme="light"] {
+  --bg: #f4f4f6;
+  --panel: #ffffff;
+  --line: #dcdce2;
+  --text: #1d1d22;
+  --dim: #6b6b75;
+  --accent: #4f5bff;
+  --canvas: #ececef;
+  --dot: #c6c6cf;
+  --note: #ffffff;
+  --handle: #ffffff;
+  --placeholder: #e0e0e7;
+  --placeholder-line: #9a9aa6;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); overflow: hidden; user-select: none; -webkit-user-select: none; }
+
+button, input, select {
+  font: inherit; color: inherit; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px;
+}
+button { cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--dim); }
+button:disabled { opacity: .4; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.warn { border-color: #d98a2b; color: #d98a2b; }
+input:focus, select:focus { outline: 1px solid var(--accent); }
+
+/* start screen */
+.start { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+.start h1 { font-size: 20px; font-weight: 600; margin: 0; }
+.start .row { display: flex; gap: 8px; }
+.recent { width: 360px; display: flex; flex-direction: column; gap: 4px; }
+.recent h2 { font-size: 11px; font-weight: 500; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; margin: 8px 0 2px; }
+.recent button { text-align: left; display: flex; flex-direction: column; background: none; border-color: transparent; }
+.recent button:hover { background: var(--panel); }
+.recent span { color: var(--dim); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* layout */
+.app { height: 100%; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: nowrap; overflow: hidden; }
+.topbar > * { flex: none; }
+.topbar .name { background: none; border-color: transparent; font-weight: 600; width: 180px; }
+.topbar .name:hover { border-color: var(--line); }
+.topbar .spacer { flex: 1; }
+.status { color: var(--dim); font-size: 12px; min-width: 70px; }
+.status.error { color: #ff6b6b; font-weight: 600; }
+.main { flex: 1; display: flex; min-height: 0; }
+
+.seg { display: flex; }
+.seg button { border-radius: 0; margin-left: -1px; }
+.seg button:first-child { border-radius: 6px 0 0 6px; margin-left: 0; }
+.seg button:last-child { border-radius: 0 6px 6px 0; }
+.seg button.on { background: var(--accent); border-color: var(--accent); color: #fff; position: relative; }
+
+.pen-opts { display: flex; align-items: center; gap: 4px; }
+.swatch { width: 18px; height: 18px; padding: 0; border-radius: 50%; }
+.swatch.ink { background: var(--text); }
+.swatch.on { outline: 2px solid var(--accent); outline-offset: 1px; }
+.dot { width: 22px; height: 22px; padding: 0; display: grid; place-items: center; border-radius: 50%; }
+.dot i { display: block; background: var(--text); border-radius: 50%; }
+.dot.on { border-color: var(--accent); }
+
+.font-size { display: flex; align-items: center; gap: 2px; }
+.font-size input { width: 52px; text-align: center; padding: 4px 2px; }
+.font-size button { padding: 4px 6px; }
+
+/* asset browser */
+.browser { width: 300px; flex: none; display: flex; flex-direction: column; background: var(--panel); border-right: 1px solid var(--line); min-height: 0; }
+.browser-head { display: flex; gap: 6px; padding: 8px; }
+.browser-head .folder { flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.browser-tools { display: flex; gap: 6px; padding: 0 8px 8px; }
+.browser-tools input { flex: 1; min-width: 0; user-select: text; -webkit-user-select: text; }
+.count { padding: 0 10px 6px; color: var(--dim); font-size: 11px; }
+.scroller { flex: 1; overflow-y: auto; position: relative; min-height: 0; }
+.folder-head { position: absolute; left: 0; right: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding: 0 10px 4px; font-size: 11px; font-weight: 600; color: var(--dim); border-bottom: 1px solid var(--line); margin: 0 8px; padding-left: 2px; padding-right: 2px; }
+.folder-head span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.folder-head em { font-style: normal; font-weight: 500; opacity: .8; }
+.tile-row { position: absolute; left: 8px; display: grid; gap: 6px; }
+.tile { position: relative; background: var(--bg); border-radius: 4px; overflow: hidden; cursor: grab; }
+.tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile .vid { display: grid; place-items: center; height: 100%; font-size: 20px; color: var(--dim); }
+.tile .name { position: absolute; inset: auto 0 0 0; padding: 2px 5px; font-size: 10px; background: rgba(0,0,0,.72); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; }
+.tile:hover .name { opacity: 1; }
+.empty { padding: 16px; color: var(--dim); display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+
+/* canvas (WebGL canvas is inserted by PixiJS; these are the DOM bits layered on it) */
+.canvas { flex: 1; position: relative; overflow: hidden; touch-action: none; background: var(--canvas); }
+.note-editor {
+  position: absolute; margin: 0; border: 0; resize: none; overflow: hidden; z-index: 5;
+  background: var(--note); color: var(--text); user-select: text; -webkit-user-select: text; cursor: text;
+  outline: 2px solid var(--accent); transform-origin: 0 0;
+}
+.video-layer { position: absolute; z-index: 4; outline: 2px solid var(--accent); }
+.video-layer video { width: 100%; height: 100%; display: block; background: #000; object-fit: fill; }
+.video-grip { position: absolute; left: -2px; right: -2px; top: -16px; height: 14px; background: var(--accent); border-radius: 3px 3px 0 0; cursor: move; }
+
+.notice { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--panel); border: 1px solid var(--line); box-shadow: 0 4px 16px rgba(0,0,0,.25); padding: 8px 14px; border-radius: 6px; cursor: pointer; max-width: 80%; z-index: 20; }
